@@ -5,6 +5,7 @@ import 'package:gallery/pages/demo.dart';
 import 'package:gallery/pages/home.dart';
 import 'package:gallery/studies/crane/app.dart';
 import 'package:gallery/studies/fortnightly/app.dart';
+import 'package:gallery/studies/procurify/app.dart';
 import 'package:gallery/studies/rally/app.dart';
 import 'package:gallery/studies/shrine/app.dart';
 import 'package:gallery/studies/starter/app.dart';
@@ -60,6 +61,10 @@ class RouteConfiguration {
     Path(
       r'^' + StarterApp.defaultRoute,
       (context, match) => const StudyWrapper(study: StarterApp()),
+    ),
+    Path(
+      r'^' + ProcurifyApp.homeRoute,
+      (context, match) => const StudyWrapper(study: ProcurifyApp()),
     ),
     Path(
       r'^/',

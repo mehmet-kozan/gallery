@@ -164,6 +164,12 @@ Map<String, GalleryDemo> studies(GalleryLocalizations localizations) {
       category: GalleryDemoCategory.study,
       studyId: 'starter',
     ),
+     'procurify': GalleryDemo(
+      title: 'Procurify',
+      subtitle: localizations.rallyDescription,
+      category: GalleryDemoCategory.study,
+      studyId: 'procurify',
+    ),
   };
 }
 
