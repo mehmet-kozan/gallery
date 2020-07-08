@@ -225,10 +225,10 @@ class GalleryLocalizationsEn extends GalleryLocalizations {
   String get rallyTitleOverview => 'OVERVIEW';
 
   @override
-  String get rallyTitleAccounts => 'ACCOUNTS';
+  String get rallyTitleAccounts => 'REQUEST';
 
   @override
-  String get rallyTitleBills => 'BILLS';
+  String get rallyTitleBills => 'REPORTS';
 
   @override
   String get rallyTitleBudgets => 'BUDGETS';

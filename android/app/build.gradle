@@ -37,18 +37,22 @@ android {
     }
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "io.flutter.demo.gallery"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner" 
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled true
+            useProguard true
             signingConfig signingConfigs.debug
         }
     }

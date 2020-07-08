@@ -7,6 +7,7 @@ import 'package:gallery/data/gallery_options.dart';
 import 'package:gallery/l10n/gallery_localizations.dart';
 import 'package:gallery/layout/adaptive.dart';
 import 'package:gallery/layout/text_scale.dart';
+import 'package:gallery/studies/procurify/icons/customIcons.dart';
 import 'package:gallery/studies/procurify/tabs/accounts.dart';
 import 'package:gallery/studies/procurify/tabs/bills.dart';
 import 'package:gallery/studies/procurify/tabs/budgets.dart';
@@ -24,13 +25,20 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController _tabController;
+  TabController __tabController;
+
+  void _handleTabs(int tabIndex) {
+    __tabController.animateTo(tabIndex, duration: const Duration(milliseconds: 300));
+  }
 
   @override
   void initState() {
     super.initState();
+
+    __tabController = TabController(length: 3, vsync: this);
+
     _tabController = TabController(length: tabCount, vsync: this)
       ..addListener(() {
         // Set state to make sure that the [_RallyTab] widgets get updated when changing tabs.
@@ -50,13 +58,9 @@ class _HomePageState extends State<HomePage>
     final isDesktop = isDisplayDesktop(context);
     Widget tabBarView;
     if (isDesktop) {
-      final isTextDirectionRtl =
-          GalleryOptions.of(context).resolvedTextDirection() ==
-              TextDirection.rtl;
-      final verticalRotation =
-          isTextDirectionRtl ? turnsToRotateLeft : turnsToRotateRight;
-      final revertVerticalRotation =
-          isTextDirectionRtl ? turnsToRotateRight : turnsToRotateLeft;
+      final isTextDirectionRtl = GalleryOptions.of(context).resolvedTextDirection() == TextDirection.rtl;
+      final verticalRotation = isTextDirectionRtl ? turnsToRotateLeft : turnsToRotateRight;
+      final revertVerticalRotation = isTextDirectionRtl ? turnsToRotateRight : turnsToRotateLeft;
       tabBarView = Row(
         children: [
           Container(
@@ -80,9 +84,7 @@ class _HomePageState extends State<HomePage>
                 RotatedBox(
                   quarterTurns: verticalRotation,
                   child: _RallyTabBar(
-                    tabs: _buildTabs(
-                            context: context, theme: theme, isVertical: true)
-                        .map(
+                    tabs: _buildTabs(context: context, theme: theme, isVertical: true).map(
                       (widget) {
                         // Revert the rotation on the tabs.
                         return RotatedBox(
@@ -154,12 +156,16 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.green,
+          onPressed: () {},
+        ),
       ),
     );
   }
 
-  List<Widget> _buildTabs(
-      {BuildContext context, ThemeData theme, bool isVertical = false}) {
+  List<Widget> _buildTabs({BuildContext context, ThemeData theme, bool isVertical = false}) {
     return [
       _RallyTab(
         theme: theme,
@@ -171,7 +177,7 @@ class _HomePageState extends State<HomePage>
       ),
       _RallyTab(
         theme: theme,
-        iconData: Icons.attach_money,
+        iconData: CustomIcons.file,
         title: GalleryLocalizations.of(context).rallyTitleAccounts,
         tabIndex: 1,
         tabController: _tabController,
@@ -179,7 +185,7 @@ class _HomePageState extends State<HomePage>
       ),
       _RallyTab(
         theme: theme,
-        iconData: Icons.money_off,
+        iconData: CustomIcons.lineChart,
         title: GalleryLocalizations.of(context).rallyTitleBills,
         tabIndex: 2,
         tabController: _tabController,
@@ -207,7 +213,10 @@ class _HomePageState extends State<HomePage>
   List<Widget> _buildTabViews() {
     return [
       OverviewView(),
-      AccountsView(),
+      AccountView(
+        tabController: __tabController,
+        tabHandler: _handleTabs,
+      ),
       BillsView(),
       BudgetsView(),
       SettingsView(),
@@ -216,8 +225,7 @@ class _HomePageState extends State<HomePage>
 }
 
 class _RallyTabBar extends StatelessWidget {
-  const _RallyTabBar({Key key, this.tabs, this.tabController})
-      : super(key: key);
+  const _RallyTabBar({Key key, this.tabs, this.tabController}) : super(key: key);
 
   final List<Widget> tabs;
   final TabController tabController;
@@ -262,8 +270,7 @@ class _RallyTab extends StatefulWidget {
   _RallyTabState createState() => _RallyTabState();
 }
 
-class _RallyTabState extends State<_RallyTab>
-    with SingleTickerProviderStateMixin {
+class _RallyTabState extends State<_RallyTab> with SingleTickerProviderStateMixin {
   Animation<double> _titleSizeAnimation;
   Animation<double> _titleFadeAnimation;
   Animation<double> _iconFadeAnimation;

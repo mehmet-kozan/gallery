@@ -222,10 +222,6 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                             20 * textScaleFactor / 2
                         : 175 + 140 * textScaleFactor / 2,
                   ),
-                  // To display the middle front layer higher than the others,
-                  // we allow the TabBarView to overflow by an offset
-                  // (doubled because it technically overflows top & bottom).
-                  // The other front layers are top padded by this offset.
                   child: LayoutBuilder(builder: (context, constraints) {
                     return OverflowBox(
                       maxHeight:

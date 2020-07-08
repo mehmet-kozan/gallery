@@ -3,33 +3,45 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:gallery/studies/procurify/backdrop.dart';
+import 'package:gallery/studies/procurify/tabs/custom.dart';
 
-import 'package:gallery/l10n/gallery_localizations.dart';
-import 'package:gallery/studies/procurify/charts/pie_chart.dart';
-import 'package:gallery/studies/procurify/data.dart';
-import 'package:gallery/studies/procurify/finance.dart';
-import 'package:gallery/studies/procurify/tabs/sidebar.dart';
 
-/// A page that shows a summary of accounts.
-class AccountsView extends StatelessWidget {
+class AccountView extends StatefulWidget {
+  final Function(int) tabHandler;
+  final TabController tabController;
+  AccountView({Key key, this.tabHandler, this.tabController}) : super(key: key);
+
+  @override
+  AccountViewState createState() => AccountViewState();
+}
+
+class AccountViewState extends State<AccountView> {
+  IconData iconData = Icons.account_box;
+
+  void changePage(int index) {
+    switch (index) {
+      case 0:
+        iconData = Icons.account_box;
+        break;
+      case 1:
+        iconData = Icons.ac_unit;
+        break;
+      case 2:
+        iconData = Icons.access_alarms;
+        break;
+      default:
+        iconData = Icons.account_box;
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    final items = DummyDataService.getAccountDataList(context);
-    final detailItems = DummyDataService.getAccountDetailList(context);
-    final balanceTotal = sumAccountDataPrimaryAmount(items);
-
-    return TabWithSidebar(
-      mainView: FinancialEntityView(
-        heroLabel: GalleryLocalizations.of(context).rallyAccountTotal,
-        heroAmount: balanceTotal,
-        segments: buildSegmentsFromAccountItems(items),
-        wholeAmount: balanceTotal,
-        financialEntityCards: buildAccountDataListViews(items, context),
-      ),
-      sidebarItems: [
-        for (UserDetailData item in detailItems)
-          SidebarItem(title: item.title, value: item.value)
-      ],
+    return CustomView(
+      mainView: ProcurifyAppBar(tabController: widget.tabController, stateWidget: this),
+      sidebarItems: CustomSidebarItem(),
     );
   }
 }

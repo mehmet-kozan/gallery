@@ -22,20 +22,21 @@ class TabWithSidebar extends StatelessWidget {
       return Row(
         children: [
           Flexible(
-            flex: 2,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: Card(
+                color: Colors.transparent,
+                margin: const EdgeInsets.only(bottom: 65),
                 child: mainView,
               ),
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Container(
               color: RallyColors.inputBackground,
               padding: const EdgeInsetsDirectional.only(start: 24),
-              height: double.infinity,
               alignment: AlignmentDirectional.centerStart,
               child: ListView(
                 shrinkWrap: true,
@@ -46,7 +47,11 @@ class TabWithSidebar extends StatelessWidget {
         ],
       );
     } else {
-      return SingleChildScrollView(child: mainView);
+      return Card(
+        color: Colors.transparent,
+        margin: const EdgeInsets.only(bottom: 75),
+        child: mainView,
+      );
     }
   }
 }
